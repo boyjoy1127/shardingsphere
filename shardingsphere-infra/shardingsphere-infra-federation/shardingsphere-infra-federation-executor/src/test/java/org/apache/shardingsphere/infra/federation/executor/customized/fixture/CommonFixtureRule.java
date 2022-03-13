@@ -15,30 +15,22 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.infra.federation.executor;
+package org.apache.shardingsphere.infra.federation.executor.customized.fixture;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.apache.shardingsphere.infra.binder.LogicSQL;
-import org.apache.shardingsphere.infra.executor.sql.context.ExecutionUnit;
-import org.apache.shardingsphere.infra.metadata.ShardingSphereMetaData;
+import org.apache.shardingsphere.infra.rule.identifier.type.TableContainedRule;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.Collections;
 
-/**
- * Federation context.
- */
-@RequiredArgsConstructor
-@Getter
-public final class FederationContext {
+public final class CommonFixtureRule implements TableContainedRule {
     
-    private final Collection<ExecutionUnit> executionUnits = new LinkedList<>();
+    @Override
+    public Collection<String> getTables() {
+        return Collections.singletonList("t_order_new");
+    }
     
-    private final boolean preview;
-    
-    private final LogicSQL logicSQL;
-    
-    private final Map<String, ShardingSphereMetaData> metaDataMap;
+    @Override
+    public String getType() {
+        return CommonFixtureRule.class.getSimpleName();
+    }
 }

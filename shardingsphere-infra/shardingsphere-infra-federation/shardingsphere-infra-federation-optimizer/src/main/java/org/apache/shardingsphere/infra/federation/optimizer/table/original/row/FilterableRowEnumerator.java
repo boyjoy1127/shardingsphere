@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.infra.federation.executor.original.row;
+package org.apache.shardingsphere.infra.federation.optimizer.table.original.row;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.calcite.linq4j.Enumerator;

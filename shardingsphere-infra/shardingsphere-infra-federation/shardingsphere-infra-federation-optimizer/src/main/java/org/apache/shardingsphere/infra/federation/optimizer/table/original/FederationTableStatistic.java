@@ -15,16 +15,17 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.infra.federation.executor.original;
+package org.apache.shardingsphere.infra.federation.optimizer.table.original;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.calcite.rel.RelCollation;
 import org.apache.calcite.rel.RelDistribution;
 import org.apache.calcite.rel.RelDistributionTraitDef;
 import org.apache.calcite.rel.RelReferentialConstraint;
 import org.apache.calcite.schema.Statistic;
 import org.apache.calcite.util.ImmutableBitSet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Statistic of federation table.
