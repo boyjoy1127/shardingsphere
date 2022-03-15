@@ -56,7 +56,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
-            <artifactId>shardingsphere-infra-federation-optimizer</artifactId>
+            <artifactId>shardingsphere-infra-federation-executor</artifactId>
             <version>${project.version}</version>
         </dependency>
         

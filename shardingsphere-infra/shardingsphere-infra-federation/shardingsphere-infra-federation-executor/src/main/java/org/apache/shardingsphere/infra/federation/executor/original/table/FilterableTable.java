@@ -27,7 +27,7 @@ import org.apache.calcite.schema.ProjectableFilterableTable;
 import org.apache.calcite.schema.Statistic;
 import org.apache.calcite.schema.impl.AbstractTable;
 import org.apache.shardingsphere.infra.federation.executor.original.FederationTableStatistic;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.FederationTableMetaData;
+import org.apache.shardingsphere.infra.federation.executor.optimizer.metadata.FederationTableMetaData;
 
 import java.util.List;
 
@@ -42,6 +42,12 @@ public final class FilterableTable extends AbstractTable implements ProjectableF
     private final FilterableTableScanExecutor executor;
     
     private final FederationTableStatistic statistic;
+    
+    public FilterableTable(final FederationTableMetaData metaData) {
+        this.metaData = metaData;
+        this.executor = null;
+        this.statistic = null;
+    }
     
     @Override
     public RelDataType getRowType(final RelDataTypeFactory typeFactory) {
