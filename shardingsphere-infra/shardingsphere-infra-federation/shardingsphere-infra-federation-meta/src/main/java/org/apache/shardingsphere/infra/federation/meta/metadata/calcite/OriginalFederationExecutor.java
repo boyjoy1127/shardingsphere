@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.infra.federation.executor.original;
+package org.apache.shardingsphere.infra.federation.meta.metadata.calcite;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.calcite.jdbc.CalciteConnection;
 import org.apache.shardingsphere.infra.config.props.ConfigurationProperties;
@@ -25,11 +26,8 @@ import org.apache.shardingsphere.infra.executor.sql.execute.engine.driver.jdbc.J
 import org.apache.shardingsphere.infra.executor.sql.execute.engine.driver.jdbc.JDBCExecutorCallback;
 import org.apache.shardingsphere.infra.executor.sql.execute.result.ExecuteResult;
 import org.apache.shardingsphere.infra.executor.sql.prepare.driver.DriverExecutionPrepareEngine;
-import org.apache.shardingsphere.infra.federation.executor.FederationContext;
-import org.apache.shardingsphere.infra.federation.executor.FederationExecutor;
-import org.apache.shardingsphere.infra.federation.executor.original.database.FilterableDatabase;
-import org.apache.shardingsphere.infra.federation.executor.original.table.FilterableTableScanExecutor;
-import org.apache.shardingsphere.infra.federation.executor.original.table.FilterableTableScanExecutorContext;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.table.FilterableTableScanExecutor;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.table.FilterableTableScanExecutorContext;
 import org.apache.shardingsphere.infra.federation.optimizer.context.OptimizerContext;
 import org.apache.shardingsphere.infra.metadata.database.rule.ShardingSphereRuleMetaData;
 import org.apache.shardingsphere.sql.parser.sql.common.util.SQLUtil;
@@ -45,6 +43,7 @@ import java.util.List;
 /**
  * Original federation executor.
  */
+@Getter
 @RequiredArgsConstructor
 public final class OriginalFederationExecutor implements FederationExecutor {
     
@@ -95,10 +94,10 @@ public final class OriginalFederationExecutor implements FederationExecutor {
                            final JDBCExecutorCallback<? extends ExecuteResult> callback, final FederationContext federationContext) throws SQLException {
         FilterableTableScanExecutorContext executorContext = new FilterableTableScanExecutorContext(databaseName, schemaName, props, federationContext);
         FilterableTableScanExecutor executor = new FilterableTableScanExecutor(prepareEngine, jdbcExecutor, callback, optimizerContext, globalRuleMetaData, executorContext);
-        FilterableDatabase database = new FilterableDatabase(optimizerContext.getFederationMetaData().getDatabases().get(databaseName), executor);
-        // TODO support database.schema.table query when switch to CustomizedFilterableExecutor, calcite jdbc just support schema.table query now
-        connection.getRootSchema().add(schemaName, database.getSubSchema(schemaName));
-        connection.setSchema(schemaName);
+        // FilterableDatabase database = new FilterableDatabase(optimizerContext.getFederationMetaData().getDatabases().get(databaseName), executor);
+        // // TODO support database.schema.table query when switch to CustomizedFilterableExecutor, calcite jdbc just support schema.table query now
+        // connection.getRootSchema().add(schemaName, database.getSubSchema(schemaName));
+        // connection.setSchema(schemaName);
     }
     
     private void setParameters(final PreparedStatement preparedStatement, final List<Object> parameters) throws SQLException {

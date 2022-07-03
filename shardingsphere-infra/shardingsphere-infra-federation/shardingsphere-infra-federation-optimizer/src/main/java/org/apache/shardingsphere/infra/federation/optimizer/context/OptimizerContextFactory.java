@@ -19,11 +19,12 @@ package org.apache.shardingsphere.infra.federation.optimizer.context;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.table.FilterableTableScanExecutor;
 import org.apache.shardingsphere.infra.federation.optimizer.context.parser.OptimizerParserContext;
 import org.apache.shardingsphere.infra.federation.optimizer.context.parser.OptimizerParserContextFactory;
 import org.apache.shardingsphere.infra.federation.optimizer.context.planner.OptimizerPlannerContext;
 import org.apache.shardingsphere.infra.federation.optimizer.context.planner.OptimizerPlannerContextFactory;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.FederationMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.FederationMetaData;
 import org.apache.shardingsphere.infra.metadata.database.ShardingSphereDatabase;
 import org.apache.shardingsphere.infra.metadata.database.rule.ShardingSphereRuleMetaData;
 import org.apache.shardingsphere.parser.rule.SQLParserRule;
@@ -41,10 +42,11 @@ public final class OptimizerContextFactory {
      *
      * @param databases databases
      * @param globalRuleMetaData global rule meta data
+     * @param executor filterable table scan executor
      * @return created optimizer context
      */
-    public static OptimizerContext create(final Map<String, ShardingSphereDatabase> databases, final ShardingSphereRuleMetaData globalRuleMetaData) {
-        FederationMetaData federationMetaData = new FederationMetaData(databases);
+    public static OptimizerContext create(final Map<String, ShardingSphereDatabase> databases, final ShardingSphereRuleMetaData globalRuleMetaData, final FilterableTableScanExecutor executor) {
+        FederationMetaData federationMetaData = new FederationMetaData(databases, executor);
         Map<String, OptimizerParserContext> parserContexts = OptimizerParserContextFactory.create(databases);
         Map<String, OptimizerPlannerContext> plannerContexts = OptimizerPlannerContextFactory.create(federationMetaData);
         SQLParserRule sqlParserRule = globalRuleMetaData.getSingleRule(SQLParserRule.class);

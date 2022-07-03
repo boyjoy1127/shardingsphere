@@ -31,5 +31,6 @@
     <modules>
         <module>shardingsphere-infra-federation-optimizer</module>
         <module>shardingsphere-infra-federation-executor</module>
+        <module>shardingsphere-infra-federation-meta</module>
     </modules>
 </project>

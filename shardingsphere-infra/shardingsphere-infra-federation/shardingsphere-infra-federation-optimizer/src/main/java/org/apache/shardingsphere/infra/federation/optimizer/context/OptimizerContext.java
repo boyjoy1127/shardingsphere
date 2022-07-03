@@ -24,8 +24,8 @@ import org.apache.shardingsphere.infra.federation.optimizer.context.parser.Optim
 import org.apache.shardingsphere.infra.federation.optimizer.context.parser.OptimizerParserContextFactory;
 import org.apache.shardingsphere.infra.federation.optimizer.context.planner.OptimizerPlannerContext;
 import org.apache.shardingsphere.infra.federation.optimizer.context.planner.OptimizerPlannerContextFactory;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.FederationDatabaseMetaData;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.FederationMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.FederationDatabaseMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.FederationMetaData;
 import org.apache.shardingsphere.parser.rule.SQLParserRule;
 
 import java.util.Collections;
@@ -56,6 +56,6 @@ public final class OptimizerContext {
         FederationDatabaseMetaData federationDatabaseMetaData = new FederationDatabaseMetaData(databaseName, Collections.emptyMap());
         federationMetaData.getDatabases().put(databaseName, federationDatabaseMetaData);
         parserContexts.put(databaseName, OptimizerParserContextFactory.create(protocolType));
-        plannerContexts.put(databaseName, OptimizerPlannerContextFactory.create(federationDatabaseMetaData));
+        plannerContexts.put(databaseName, OptimizerPlannerContextFactory.create(federationDatabaseMetaData, federationMetaData));
     }
 }

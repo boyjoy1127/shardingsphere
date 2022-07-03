@@ -15,30 +15,30 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.infra.federation.executor.original.database;
+package org.apache.shardingsphere.infra.federation.meta.metadata.calcite;
 
 import lombok.Getter;
 import org.apache.calcite.schema.Schema;
 import org.apache.calcite.schema.impl.AbstractSchema;
-import org.apache.shardingsphere.infra.federation.executor.original.schema.FilterableSchema;
-import org.apache.shardingsphere.infra.federation.executor.original.table.FilterableTableScanExecutor;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.FederationDatabaseMetaData;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.FederationSchemaMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.FederationDatabaseMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.FederationSchemaMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.schema.FilterableSchema;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.table.FilterableTableScanExecutor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Filterable database.
+ * Federation database.
  */
 @Getter
-public final class FilterableDatabase extends AbstractSchema {
+public final class FederationDatabase extends AbstractSchema {
     
     private final String name;
     
     private final Map<String, Schema> subSchemaMap;
     
-    public FilterableDatabase(final FederationDatabaseMetaData databaseMetaData, final FilterableTableScanExecutor executor) {
+    public FederationDatabase(final FederationDatabaseMetaData databaseMetaData, final FilterableTableScanExecutor executor) {
         name = databaseMetaData.getName();
         subSchemaMap = createSubSchemaMap(databaseMetaData, executor);
     }

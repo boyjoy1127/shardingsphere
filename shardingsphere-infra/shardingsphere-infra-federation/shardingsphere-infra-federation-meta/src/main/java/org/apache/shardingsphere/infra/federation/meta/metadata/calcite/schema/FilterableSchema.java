@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.infra.federation.executor.original.schema;
+package org.apache.shardingsphere.infra.federation.meta.metadata.calcite.schema;
 
 import lombok.Getter;
 import org.apache.calcite.schema.Table;
 import org.apache.calcite.schema.impl.AbstractSchema;
-import org.apache.shardingsphere.infra.federation.executor.original.table.FederationTableStatistic;
-import org.apache.shardingsphere.infra.federation.executor.original.table.FilterableTable;
-import org.apache.shardingsphere.infra.federation.executor.original.table.FilterableTableScanExecutor;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.FederationSchemaMetaData;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.FederationTableMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.FederationSchemaMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.FederationTableMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.table.FederationTableStatistic;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.table.FilterableTable;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.table.FilterableTableScanExecutor;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -18,7 +18,10 @@
 package org.apache.shardingsphere.infra.federation.executor.advanced;
 
 import lombok.SneakyThrows;
+import org.apache.shardingsphere.infra.binder.LogicSQL;
 import org.apache.shardingsphere.infra.database.type.dialect.H2DatabaseType;
+import org.apache.shardingsphere.infra.database.type.dialect.MySQLDatabaseType;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.FederationContext;
 import org.apache.shardingsphere.infra.federation.optimizer.context.OptimizerContext;
 import org.apache.shardingsphere.infra.federation.optimizer.context.OptimizerContextFactory;
 import org.apache.shardingsphere.infra.metadata.database.ShardingSphereDatabase;
@@ -46,6 +49,8 @@ public class AdvancedFederationExecutorTest {
     
     private AdvancedFederationExecutor executor;
     
+    private Map<String, ShardingSphereDatabase> databases;
+    
     @Before
     public void init() throws Exception {
         Map<String, ShardingSphereTable> tables = new HashMap<>(2, 1);
@@ -53,10 +58,11 @@ public class AdvancedFederationExecutorTest {
         tables.put("t_user_info", createUserInfoTableMetaData());
         String schemaName = "federate_jdbc";
         String databaseName = "database_name";
-        Map<String, ShardingSphereSchema> schemas = Collections.singletonMap(databaseName, new ShardingSphereSchema(tables));
-        ShardingSphereDatabase metaData = new ShardingSphereDatabase(schemaName, new H2DatabaseType(), mockResource(), null, schemas);
-        OptimizerContext optimizerContext = OptimizerContextFactory.create(Collections.singletonMap(schemaName, metaData), createGlobalRuleMetaData());
+        Map<String, ShardingSphereSchema> schemas = Collections.singletonMap(schemaName, new ShardingSphereSchema(tables));
+        ShardingSphereDatabase metaData = new ShardingSphereDatabase(schemaName, new MySQLDatabaseType(), mockResource(), null, schemas);
+        OptimizerContext optimizerContext = OptimizerContextFactory.create(Collections.singletonMap(databaseName, metaData), createGlobalRuleMetaData(), null);
         executor = new AdvancedFederationExecutor(databaseName, schemaName, optimizerContext);
+        databases = Collections.singletonMap(databaseName, metaData);
     }
     
     private ShardingSphereRuleMetaData createGlobalRuleMetaData() {
@@ -87,5 +93,8 @@ public class AdvancedFederationExecutorTest {
     @SneakyThrows
     public void assertSelectWhereSingleField() {
         // TODO add executor.executeQuery()
+        LogicSQL logicSQL = new LogicSQL(null, "select * from t_order_federate", null);
+        FederationContext context = new FederationContext(true, logicSQL, databases);
+        executor.executeQuery(null, null, context);
     }
 }

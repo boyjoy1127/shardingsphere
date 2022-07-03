@@ -15,25 +15,34 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.infra.federation.executor.original.table;
+package org.apache.shardingsphere.infra.federation.meta.metadata.calcite.table;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.apache.calcite.DataContext;
-import org.apache.calcite.rex.RexNode;
+import org.apache.calcite.rel.RelCollation;
+import org.apache.calcite.rel.RelDistribution;
+import org.apache.calcite.rel.RelDistributionTraitDef;
+import org.apache.calcite.rel.RelReferentialConstraint;
+import org.apache.calcite.schema.Statistic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Filterable table scan context.
+ * Statistic of federation table.
  */
-@RequiredArgsConstructor
-@Getter
-public final class FilterableTableScanContext {
+public final class FederationTableStatistic implements Statistic {
     
-    private final DataContext root;
+    @Override
+    public List<RelReferentialConstraint> getReferentialConstraints() {
+        return new ArrayList<>();
+    }
     
-    private final List<RexNode> filters;
+    @Override
+    public List<RelCollation> getCollations() {
+        return new ArrayList<>();
+    }
     
-    private final int[] projects;
+    @Override
+    public RelDistribution getDistribution() {
+        return RelDistributionTraitDef.INSTANCE.getDefault();
+    }
 }

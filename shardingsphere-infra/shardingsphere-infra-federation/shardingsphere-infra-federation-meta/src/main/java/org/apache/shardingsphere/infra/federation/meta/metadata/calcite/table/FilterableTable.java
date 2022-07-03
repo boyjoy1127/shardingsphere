@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.infra.federation.optimizer.metadata.calcite;
+package org.apache.shardingsphere.infra.federation.meta.metadata.calcite.table;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.calcite.DataContext;
@@ -24,18 +24,23 @@ import org.apache.calcite.rel.type.RelDataType;
 import org.apache.calcite.rel.type.RelDataTypeFactory;
 import org.apache.calcite.rex.RexNode;
 import org.apache.calcite.schema.ProjectableFilterableTable;
+import org.apache.calcite.schema.Statistic;
 import org.apache.calcite.schema.impl.AbstractTable;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.FederationTableMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.FederationTableMetaData;
 
 import java.util.List;
 
 /**
- * Federation table.
+ * Filterable table.
  */
 @RequiredArgsConstructor
-public final class FederationTable extends AbstractTable implements ProjectableFilterableTable {
+public final class FilterableTable extends AbstractTable implements ProjectableFilterableTable {
     
     private final FederationTableMetaData metaData;
+    
+    private final FilterableTableScanExecutor executor;
+    
+    private final FederationTableStatistic statistic;
     
     @Override
     public RelDataType getRowType(final RelDataTypeFactory typeFactory) {
@@ -44,6 +49,11 @@ public final class FederationTable extends AbstractTable implements ProjectableF
     
     @Override
     public Enumerable<Object[]> scan(final DataContext root, final List<RexNode> filters, final int[] projects) {
-        return null;
+        return executor.execute(metaData, new FilterableTableScanContext(root, filters, projects));
+    }
+    
+    @Override
+    public Statistic getStatistic() {
+        return statistic;
     }
 }

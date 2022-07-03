@@ -36,9 +36,9 @@ import org.apache.calcite.sql.validate.SqlValidatorUtil;
 import org.apache.calcite.sql2rel.SqlToRelConverter;
 import org.apache.calcite.sql2rel.SqlToRelConverter.Config;
 import org.apache.calcite.sql2rel.StandardConvertletTable;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.FederationDatabaseMetaData;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.FederationMetaData;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.calcite.FederationDatabase;
+import org.apache.shardingsphere.infra.federation.meta.metadata.FederationDatabaseMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.FederationMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.FederationDatabase;
 import org.apache.shardingsphere.infra.federation.optimizer.planner.QueryOptimizePlannerFactory;
 
 import java.util.Collections;
@@ -54,6 +54,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class OptimizerPlannerContextFactory {
     
+    private static FederationMetaData federationMetaData;
+    
     /**
      * Create optimizer planner context map.
      *
@@ -63,7 +65,7 @@ public final class OptimizerPlannerContextFactory {
     public static Map<String, OptimizerPlannerContext> create(final FederationMetaData metaData) {
         Map<String, OptimizerPlannerContext> result = new ConcurrentHashMap<>(metaData.getDatabases().size(), 1);
         for (Entry<String, FederationDatabaseMetaData> entry : metaData.getDatabases().entrySet()) {
-            result.put(entry.getKey(), create(entry.getValue()));
+            result.put(entry.getKey(), create(entry.getValue(), metaData));
         }
         return result;
     }
@@ -72,12 +74,15 @@ public final class OptimizerPlannerContextFactory {
      * Create optimizer planner context.
      *
      * @param databaseMetaData federation database meta data
+     * @param federationMetaData federation meta data
      * @return created optimizer planner context
      */
-    public static OptimizerPlannerContext create(final FederationDatabaseMetaData databaseMetaData) {
+    public static OptimizerPlannerContext create(final FederationDatabaseMetaData databaseMetaData, final FederationMetaData federationMetaData) {
         Map<String, SqlValidator> validators = new LinkedHashMap<>();
         Map<String, SqlToRelConverter> converters = new LinkedHashMap<>();
-        FederationDatabase federationDatabase = new FederationDatabase(databaseMetaData);
+        // FilterableTableScanExecutorContext executorContext = new FilterableTableScanExecutorContext(databaseName, schemaName, props, federationContext);
+        // FilterableTableScanExecutor executor = new FilterableTableScanExecutor(prepareEngine, jdbcExecutor, callback, optimizerContext, globalRuleMetaData, executorContext);
+        FederationDatabase federationDatabase = new FederationDatabase(databaseMetaData, federationMetaData.getExecutor());
         for (Entry<String, Schema> entry : federationDatabase.getSubSchemaMap().entrySet()) {
             CalciteConnectionConfig connectionConfig = new CalciteConnectionConfigImpl(createConnectionProperties());
             RelDataTypeFactory relDataTypeFactory = new JavaTypeFactoryImpl();

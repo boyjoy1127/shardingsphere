@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.infra.federation.executor.original.table;
+package org.apache.shardingsphere.infra.federation.meta.metadata.calcite.table;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -51,12 +51,12 @@ import org.apache.shardingsphere.infra.executor.sql.execute.result.query.impl.dr
 import org.apache.shardingsphere.infra.executor.sql.execute.result.query.impl.driver.jdbc.type.stream.JDBCStreamQueryResult;
 import org.apache.shardingsphere.infra.executor.sql.prepare.driver.DriverExecutionPrepareEngine;
 import org.apache.shardingsphere.infra.executor.sql.process.ExecuteProcessEngine;
-import org.apache.shardingsphere.infra.federation.executor.FederationContext;
-import org.apache.shardingsphere.infra.federation.executor.original.SQLDialectFactory;
-import org.apache.shardingsphere.infra.federation.executor.original.row.EmptyRowEnumerator;
-import org.apache.shardingsphere.infra.federation.executor.original.row.FilterableRowEnumerator;
+import org.apache.shardingsphere.infra.federation.meta.metadata.FederationTableMetaData;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.FederationContext;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.SQLDialectFactory;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.row.EmptyRowEnumerator;
+import org.apache.shardingsphere.infra.federation.meta.metadata.calcite.row.FilterableRowEnumerator;
 import org.apache.shardingsphere.infra.federation.optimizer.context.OptimizerContext;
-import org.apache.shardingsphere.infra.federation.optimizer.metadata.FederationTableMetaData;
 import org.apache.shardingsphere.infra.merge.MergeEngine;
 import org.apache.shardingsphere.infra.merge.result.MergedResult;
 import org.apache.shardingsphere.infra.metadata.database.ShardingSphereDatabase;

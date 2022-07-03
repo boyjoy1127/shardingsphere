@@ -15,27 +15,25 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.infra.federation.optimizer.metadata;
+package org.apache.shardingsphere.infra.federation.meta.metadata.calcite.table;
 
 import lombok.Getter;
-import org.apache.shardingsphere.infra.metadata.database.ShardingSphereDatabase;
+import lombok.RequiredArgsConstructor;
+import org.apache.calcite.DataContext;
+import org.apache.calcite.rex.RexNode;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 
 /**
- * Federation meta data.
+ * Filterable table scan context.
  */
+@RequiredArgsConstructor
 @Getter
-public final class FederationMetaData {
+public final class FilterableTableScanContext {
     
-    private final Map<String, FederationDatabaseMetaData> databases;
+    private final DataContext root;
     
-    public FederationMetaData(final Map<String, ShardingSphereDatabase> databases) {
-        this.databases = new ConcurrentHashMap<>(databases.size(), 1);
-        for (Entry<String, ShardingSphereDatabase> entry : databases.entrySet()) {
-            this.databases.put(entry.getKey().toLowerCase(), new FederationDatabaseMetaData(entry.getKey(), entry.getValue().getSchemas()));
-        }
-    }
+    private final List<RexNode> filters;
+    
+    private final int[] projects;
 }

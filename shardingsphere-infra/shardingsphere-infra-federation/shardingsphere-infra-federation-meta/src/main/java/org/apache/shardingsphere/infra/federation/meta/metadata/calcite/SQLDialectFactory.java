@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.infra.federation.executor.original;
+package org.apache.shardingsphere.infra.federation.meta.metadata.calcite;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
