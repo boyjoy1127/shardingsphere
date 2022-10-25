@@ -65,6 +65,7 @@ public final class ShardingSphereProxyClusterContainer extends DockerITContainer
     
     @Override
     protected void configure() {
+        addFixedExposedPort(3308, 3308);
         withExposedPorts(3307, 3308);
         mountConfigurationFiles();
         setWaitStrategy(new JdbcConnectionWaitStrategy(() -> DriverManager.getConnection(DataSourceEnvironment.getURL(databaseType,
