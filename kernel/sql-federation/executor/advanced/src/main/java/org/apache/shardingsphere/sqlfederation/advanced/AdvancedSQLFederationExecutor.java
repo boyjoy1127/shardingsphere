@@ -48,6 +48,7 @@ import org.apache.shardingsphere.sqlfederation.SQLFederationDataContext;
 import org.apache.shardingsphere.sqlfederation.advanced.resultset.SQLFederationResultSet;
 import org.apache.shardingsphere.sqlfederation.executor.FilterableTableScanExecutor;
 import org.apache.shardingsphere.sqlfederation.executor.TableScanExecutorContext;
+import org.apache.shardingsphere.sqlfederation.executor.TranslatableTableScanExecutor;
 import org.apache.shardingsphere.sqlfederation.optimizer.OptimizedPlanManagement;
 import org.apache.shardingsphere.sqlfederation.optimizer.SQLOptimizeContext;
 import org.apache.shardingsphere.sqlfederation.optimizer.SQLOptimizeEngine;
@@ -57,6 +58,7 @@ import org.apache.shardingsphere.sqlfederation.optimizer.context.parser.Optimize
 import org.apache.shardingsphere.sqlfederation.optimizer.converter.SQLNodeConverterEngine;
 import org.apache.shardingsphere.sqlfederation.optimizer.executor.TableScanExecutor;
 import org.apache.shardingsphere.sqlfederation.optimizer.metadata.filter.FilterableSchema;
+import org.apache.shardingsphere.sqlfederation.optimizer.metadata.translatable.TranslatableSchema;
 import org.apache.shardingsphere.sqlfederation.optimizer.util.SQLFederationPlannerUtil;
 import org.apache.shardingsphere.sqlfederation.spi.SQLFederationExecutor;
 import org.apache.shardingsphere.sqlfederation.spi.SQLFederationExecutorContext;
@@ -133,10 +135,9 @@ public final class AdvancedSQLFederationExecutor implements SQLFederationExecuto
     private AbstractSchema createSQLFederationSchema(final DriverExecutionPrepareEngine<JDBCExecutionUnit, Connection> prepareEngine, final ShardingSphereSchema schema,
                                                      final JDBCExecutorCallback<? extends ExecuteResult> callback, final SQLFederationExecutorContext federationContext) {
         TableScanExecutorContext executorContext = new TableScanExecutorContext(databaseName, schemaName, props, federationContext);
-        // TODO replace FilterableTableScanExecutor with TranslatableTableScanExecutor
-        TableScanExecutor executor = new FilterableTableScanExecutor(prepareEngine, jdbcExecutor, callback, optimizerContext, globalRuleMetaData, executorContext, shardingSphereData, eventBusContext);
+        TableScanExecutor executor = new TranslatableTableScanExecutor(prepareEngine, jdbcExecutor, callback, optimizerContext, globalRuleMetaData, executorContext, shardingSphereData, eventBusContext);
         // TODO replace FilterableSchema with TranslatableSchema
-        return new FilterableSchema(schemaName, schema, JAVA_TYPE_FACTORY, executor);
+        return new TranslatableSchema(schemaName, schema, JAVA_TYPE_FACTORY, executor);
     }
     
     @SuppressWarnings("unchecked")

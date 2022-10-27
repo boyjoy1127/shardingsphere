@@ -18,6 +18,7 @@
 package org.apache.shardingsphere.sqlfederation.optimizer.metadata.translatable;
 
 import lombok.Getter;
+import org.apache.calcite.jdbc.JavaTypeFactoryImpl;
 import org.apache.calcite.schema.Schema;
 import org.apache.calcite.schema.impl.AbstractSchema;
 import org.apache.shardingsphere.sqlfederation.optimizer.executor.TableScanExecutor;
@@ -46,7 +47,7 @@ public final class TranslatableDatabase extends AbstractSchema {
     private Map<String, Schema> createSubSchemaMap(final ShardingSphereDatabase database, final TableScanExecutor executor) {
         Map<String, Schema> result = new LinkedHashMap<>(database.getSchemas().size(), 1);
         for (Entry<String, ShardingSphereSchema> entry : database.getSchemas().entrySet()) {
-            result.put(entry.getKey(), new TranslatableSchema(entry.getKey(), entry.getValue(), executor));
+            result.put(entry.getKey(), new TranslatableSchema(entry.getKey(), entry.getValue(), new JavaTypeFactoryImpl(), executor));
         }
         return result;
     }
