@@ -17,6 +17,7 @@
 
 package org.apache.shardingsphere.sqlfederation.optimizer;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.calcite.adapter.enumerable.EnumerableConvention;
 import org.apache.calcite.plan.RelOptPlanner;
@@ -24,8 +25,6 @@ import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.rel.type.RelDataType;
 import org.apache.calcite.sql.SqlNode;
 import org.apache.calcite.sql2rel.SqlToRelConverter;
-import org.apache.shardingsphere.sql.parser.sql.common.statement.SQLStatement;
-import org.apache.shardingsphere.sqlfederation.optimizer.converter.SQLNodeConverterEngine;
 
 import java.util.Objects;
 
@@ -35,6 +34,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public final class SQLOptimizeEngine {
     
+    @Getter
     private final SqlToRelConverter converter;
     
     private final RelOptPlanner hepPlanner;
@@ -42,11 +42,10 @@ public final class SQLOptimizeEngine {
     /**
      * Optimize query execution plan.
      *
-     * @param sqlStatement SQL statement
+     * @param sqlNode ast SQL node
      * @return optimized relational node
      */
-    public SQLOptimizeContext optimize(final SQLStatement sqlStatement) {
-        SqlNode sqlNode = SQLNodeConverterEngine.convert(sqlStatement);
+    public SQLOptimizeContext optimize(final SqlNode sqlNode) {
         RelNode logicPlan = converter.convertQuery(sqlNode, true, true).rel;
         RelDataType validatedNodeType = Objects.requireNonNull(converter.validator).getValidatedNodeType(sqlNode);
         RelNode ruleBasedPlan = optimizeWithRBO(logicPlan, hepPlanner);
@@ -54,7 +53,7 @@ public final class SQLOptimizeEngine {
         return new SQLOptimizeContext(bestPlan, validatedNodeType);
     }
     
-    private static RelNode optimizeWithRBO(final RelNode logicPlan, final RelOptPlanner hepPlanner) {
+    private RelNode optimizeWithRBO(final RelNode logicPlan, final RelOptPlanner hepPlanner) {
         hepPlanner.setRoot(logicPlan);
         return hepPlanner.findBestExp();
     }
