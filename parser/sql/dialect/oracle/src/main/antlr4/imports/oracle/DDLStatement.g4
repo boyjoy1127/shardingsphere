@@ -3551,8 +3551,16 @@ temporaryTablespaceClause
     : TEMPORARY TABLESPACE tablespaceName (TEMPFILE fileSpecification (COMMA_ fileSpecification)* )? tablespaceGroupClause? extentManagementClause?
     ;
 
+tablespaceRetentionClause
+    : RETENTION (GUARANTEE | NOGUARANTEE)
+    ;
+
+undoTablespaceClause
+    : UNDO TABLESPACE tablespaceName (DATAFILE fileSpecification (COMMA_ fileSpecification)*)? extentManagementClause? tablespaceRetentionClause?
+    ;
+
 createTablespace
-    : CREATE (BIGFILE|SMALLFILE)? (DATAFILE fileSpecifications)? (permanentTablespaceClause | temporaryTablespaceClause)
+    : CREATE (BIGFILE|SMALLFILE)? (DATAFILE fileSpecifications)? (permanentTablespaceClause | temporaryTablespaceClause | undoTablespaceClause)
     ;
 
 permanentTablespaceClause
