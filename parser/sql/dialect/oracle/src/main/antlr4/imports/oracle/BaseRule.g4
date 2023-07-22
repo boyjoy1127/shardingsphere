@@ -1606,9 +1606,13 @@ libName
 externalDatatype
     : dataType
     ;
-    
+
 capacityUnit
     : ('K' | 'M' | 'G' | 'T' | 'P' | 'E')
+    ;
+
+tablespaceGroupName
+    : identifier
     ;
 
 attributeDimensionName
