@@ -24,6 +24,10 @@ alterResourceCost
     : ALTER RESOURCE COST ((CPU_PER_SESSION | CONNECT_TIME | LOGICAL_READS_PER_SESSION | PRIVATE_SGA) INTEGER_)+
     ;
 
+dbLinkInfo
+    : databaseName (DOT domain)* (AT_ connectionQualifier)?
+    ;
+
 explain
-    : EXPLAIN PLAN (SET STATEMENT_ID EQ_ stringLiterals)? (INTO (schemaName DOT_)? tableName (AT_ dbLink)? )? FOR (insert | delete | update | select)
+    : EXPLAIN PLAN (SET STATEMENT_ID EQ_ stringLiterals)? (INTO (schemaName DOT_)? tableName (AT_ dbLinkInfo)? )? FOR (insert | delete | update | select)
     ;
