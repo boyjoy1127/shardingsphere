@@ -3591,5 +3591,5 @@ replaceTypeClause
     ;
 
 alterType
-    : ALTER TYPE typeName (compileTypeClause|replaceTypeClause)?
+    : ALTER TYPE typeName (compileTypeClause|replaceTypeClause|RESET)?
     ;
