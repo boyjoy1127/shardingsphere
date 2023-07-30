@@ -3544,6 +3544,7 @@ dropFunction
 createCluster
     : CREATE CLUSTER (schemaName DOT_)? clusterName
     LP_ (columnName dataType SORT? (COMMA_ columnName dataType SORT?)*) RP_
-    (physicalAttributesClause | SET sizeClause)?
+    (physicalAttributesClause | SET sizeClause | TABLESPACE tablespaceName | INDEX |
+    (SINGLE TABLE)? HASHKEYS INTEGER_ (HASH IS functionName LP_ (argument (COMMA_ argument)*) RP_)?)?
     parallelClause? (NOROWDEPENDENCIES | ROWDEPENDENCIES)? (CACHE | NOCACHE)?
     ;
